@@ -1,0 +1,8 @@
+# Install one of these supported stacks:
+# PyQt6
+# PyQt6-WebEngine
+#
+# or:
+# PyQt5
+# PyQtWebEngine
+

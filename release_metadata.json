@@ -1,0 +1,11 @@
+{
+  "name": "QuadProxy",
+  "version": "1.1.0",
+  "release_date": "2026-08-11",
+  "epoch": "EPOCH_06",
+  "description": "Customer Activation & Support Completeness Release",
+  "target_python": ">=3.8",
+  "supported_qt": ["PyQt5", "PyQt6"],
+  "support_url": "https://quadproxy.com/support",
+  "documentation_url": "https://quadproxy.com/docs"
+}
