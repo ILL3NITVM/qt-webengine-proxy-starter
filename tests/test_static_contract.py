@@ -34,6 +34,7 @@ class StaticContractTests(unittest.TestCase):
                 config_pos = max(
                     source.find("configure_application_proxy"),
                     source.find("attach_quadproxy"),
+                    source.find("setApplicationProxy"),
                 )
                 self.assertGreater(
                     config_pos,

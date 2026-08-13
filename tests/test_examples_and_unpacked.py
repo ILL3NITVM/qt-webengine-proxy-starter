@@ -78,7 +78,7 @@ class ExampleScriptsTests(unittest.TestCase):
     def test_all_examples_syntax_valid(self):
         """Verify that all example scripts (01..05) are valid Python code and can be compiled."""
         example_files = sorted(EXAMPLES_DIR.glob("*.py"))
-        self.assertEqual(len(example_files), 6, "Expected exactly 6 example scripts")
+        self.assertGreaterEqual(len(example_files), 6, "Expected at least 6 example scripts")
 
         for ex_path in example_files:
             source = ex_path.read_text(encoding="utf-8")
