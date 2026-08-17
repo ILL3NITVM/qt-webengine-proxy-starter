@@ -27,6 +27,10 @@ def main():
     # 3. Create QApplication & QWebEngineView
     app = QApplication(sys.argv)
     view = QWebEngineView()
+    def handle_proxy_auth(request_url, authenticator, proxy_host):
+        authenticator.setUser(config.user)
+        authenticator.setPassword(config.password)
+    view.page().proxyAuthenticationRequired.connect(handle_proxy_auth)
     view.setWindowTitle("PyQt5 QuadProxy Integration")
     view.resize(1024, 768)
     view.load("https://api.ipify.org")
@@ -61,6 +65,10 @@ def main():
 
     app = QApplication(sys.argv)
     view = QWebEngineView()
+    def handle_proxy_auth(request_url, authenticator, proxy_host):
+        authenticator.setUser(config.user)
+        authenticator.setPassword(config.password)
+    view.page().proxyAuthenticationRequired.connect(handle_proxy_auth)
     view.setWindowTitle("PyQt6 QuadProxy Integration")
     view.resize(1024, 768)
     view.load("https://api.ipify.org")
@@ -93,6 +101,11 @@ configure_application_proxy(config)
 
 app = QApplication(sys.argv)
 view = QWebEngineView()
+def handle_proxy_auth(request_url, authenticator, proxy_host):
+    if config:
+        authenticator.setUser(config.user)
+        authenticator.setPassword(config.password)
+view.page().proxyAuthenticationRequired.connect(handle_proxy_auth)
 view.load("https://example.com")
 view.show()
 sys.exit(app.exec_())

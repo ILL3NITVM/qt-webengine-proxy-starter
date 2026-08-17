@@ -95,7 +95,7 @@ class ProxyBrowserWidget(QWebEngineView):
         if self.proxy_config is not None:
             self.page().proxyAuthenticationRequired.connect(self._handle_proxy_auth)
 
-    def _handle_proxy_auth(self, request_url: QUrl, authenticator):
+    def _handle_proxy_auth(self, request_url: QUrl, authenticator, proxy_host: str):
         if self.proxy_config:
             authenticator.setUser(self.proxy_config.user)
             authenticator.setPassword(self.proxy_config.password)
@@ -143,4 +143,7 @@ def create_new_tab(self, url_str: str):
 
 If your proxy provider rotates IP addresses per request or per session:
 - **Sticky IP Sessions**: Ensure your proxy provider credentials (or port) specify sticky sessions if stateful login sessions are required.
-- **Dynamic Credential Updating**: To change credentials without restarting the app, call `configure_application_proxy(new_config)` and update the `proxy_config` reference used in your `proxyAuthenticationRequired` callback.
+- **Endpoint or Credential Changes**: Restart the application after changing the
+  configured proxy endpoint or credentials. Qt WebEngine consumes the
+  application proxy at browser-process startup, so changing it in an already
+  running process does not provide reliable rotation.

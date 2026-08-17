@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation and troubleshooting
+    url: https://github.com/ILL3NITVM/qt-webengine-proxy-starter/tree/main/docs
+    about: Check the quickstart, lifecycle guide, and failure playbook before filing a bug.
+  - name: Setup question
+    url: https://github.com/ILL3NITVM/qt-webengine-proxy-starter/discussions
+    about: Ask for help with an authenticated HTTP proxy or QWebEngineView integration.

@@ -9,6 +9,9 @@ README = PACKAGE_DIR / "README.md"
 QUICKSTART = PACKAGE_DIR / "docs" / "QUICKSTART.md"
 API_REFERENCE = PACKAGE_DIR / "docs" / "API_REFERENCE.md"
 FIRST_STEPS = PACKAGE_DIR / "FIRST_STEPS.md"
+DOCS_INDEX = PACKAGE_DIR / "docs" / "README.md"
+LIFECYCLE_GUIDE = PACKAGE_DIR / "docs" / "QWEBENGINE_PROXY_LIFECYCLE.md"
+ISSUE_TEMPLATE = PACKAGE_DIR / ".github" / "ISSUE_TEMPLATE" / "bug_report.md"
 
 
 class StaticContractTests(unittest.TestCase):
@@ -89,6 +92,37 @@ class StaticContractTests(unittest.TestCase):
             for path in [README, QUICKSTART, FIRST_STEPS, PACKAGE_DIR / "docs" / "TROUBLESHOOTING.md"]
         )
         self.assertNotIn("unittest discover tests", shipped_docs)
+
+    def test_public_reference_and_commercial_delivery_are_distinct(self):
+        readme = README.read_text(encoding="utf-8")
+        self.assertIn("Free Public Reference vs. $29 Commercial Download", readme)
+        self.assertIn("Commercial single-customer starter-kit license", readme)
+        self.assertIn("does not include a proxy subscription or proxy IPs", readme)
+        self.assertNotIn("MIT License", readme)
+
+    def test_lifecycle_reference_matches_authentication_contract(self):
+        self.assertTrue(DOCS_INDEX.exists())
+        self.assertTrue(LIFECYCLE_GUIDE.exists())
+        self.assertTrue((EXAMPLES_DIR / "08_qwebengine_authenticated_proxy.py").exists())
+        lifecycle = LIFECYCLE_GUIDE.read_text(encoding="utf-8")
+        integration = (PACKAGE_DIR / "docs" / "INTEGRATION_GUIDE.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "proxyAuthenticationRequired(request_url, authenticator, proxy_host)",
+            lifecycle,
+        )
+        self.assertIn(
+            "def _handle_proxy_auth(self, request_url: QUrl, authenticator, proxy_host: str):",
+            integration,
+        )
+        self.assertIn("Restart the application", integration)
+
+    def test_issue_template_protects_credentials(self):
+        template = ISSUE_TEMPLATE.read_text(encoding="utf-8")
+        self.assertIn("Never paste a real proxy hostname", template)
+        self.assertIn("GitHub Discussions", template)
+        self.assertNotIn("complete commercial starter kit", template)
 
     def test_api_reference_matches_diagnostics_contract(self):
         api = API_REFERENCE.read_text(encoding="utf-8")
