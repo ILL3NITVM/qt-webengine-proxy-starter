@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Example 07: SOCKS5 and HTTP Proxy Protocol Selection in PyQt QWebEngineView.
+"""Example 07: authenticated HTTP proxy scope validation.
 
-Demonstrates configuring QNetworkProxy for both HTTP and SOCKS5 authenticated proxies.
-
-Seller Disclosure: Created by QuadProxy engineering team (https://quadproxy.com).
+QuadProxy v1.0 configures authenticated HTTP proxies only. SOCKS5 and HTTPS
+proxy schemes are intentionally rejected rather than silently attempting an
+unsupported configuration.
 """
 
 import os
@@ -16,6 +16,7 @@ if PRODUCT_DIR not in sys.path:
 
 from quadproxy.compatibility import (
     QApplication,
+    QNETWORK_HTTP_PROXY,
     QNetworkProxy,
     QUrl,
     QWebEngineView,
@@ -28,14 +29,16 @@ def main():
     user = os.environ.get("PROXY_USER", "my_user")
     password = os.environ.get("PROXY_PASSWORD", "my_pass")
 
-    # Select proxy protocol type
-    if proxy_type_str == "SOCKS5":
-        proxy_type = QNetworkProxy.Socks5Proxy
-    else:
-        proxy_type = QNetworkProxy.HttpProxy
+    if proxy_type_str != "HTTP":
+        print(
+            "QuadProxy v1.0 supports authenticated HTTP proxies only; "
+            "SOCKS5 and HTTPS proxy schemes are not supported.",
+            file=sys.stderr,
+        )
+        return 2
 
-    # CRITICAL: Set application proxy BEFORE QApplication
-    proxy = QNetworkProxy(proxy_type, host, port)
+    # Set the application proxy before QApplication and all WebEngine objects.
+    proxy = QNetworkProxy(QNETWORK_HTTP_PROXY, host, port)
     if user:
         proxy.setUser(user)
     if password:
@@ -46,14 +49,14 @@ def main():
     app = QApplication.instance() or QApplication(sys.argv)
     view = QWebEngineView()
 
-    # Hook credential challenge signal for HTTP 407 / SOCKS5 auth
+    # Handle the HTTP 407 authentication challenge.
     def handle_auth(request_url, authenticator, proxy_host):
         authenticator.setUser(user)
         authenticator.setPassword(password)
 
     view.page().proxyAuthenticationRequired.connect(handle_auth)
 
-    print(f"[QuadProxy] Configured {proxy_type_str} proxy -> {user}@{host}:{port}")
+    print(f"[QuadProxy] Configured authenticated HTTP proxy -> {user}@{host}:{port}")
     view.load(QUrl("https://api.ipify.org"))
     view.show()
 

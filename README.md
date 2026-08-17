@@ -111,18 +111,53 @@ python -m quadproxy wizard
 
 ---
 
+## Free Public Reference vs. $29 Commercial Download
+
+The GitHub repository is a free technical reference for the Qt WebEngine
+proxy lifecycle. The $29 purchase is a one-time digital delivery of the
+QuadProxy starter kit under its commercial single-customer license. Neither
+one is a proxy service, proxy subscription, or source of proxy IPs.
+
+| | Free GitHub Reference | $29 at [quadproxy.com](https://quadproxy.com) |
+|---|---|---|
+| **Purpose** | Learn the initialization, 407 callback, and rendered-IP verification pattern. | Download the packaged starter kit for use in an application you own or operate. |
+| **Material** | Lifecycle guide, troubleshooting, API documentation, and runnable reference examples. | ZIP delivery with the starter application, diagnostics, setup wizard, support-bundle workflow, and documentation. |
+| **License / use** | Read the repository license before using or redistributing any source. It is not an open-source license grant. | A commercial single-customer license to use, modify, and deploy the kit in applications you own or operate; see `LICENSE.txt`. |
+| **Proxy IPs, bandwidth, or accounts** | Not included. | Not included. Bring credentials from your own provider. |
+| **Support path** | Public documentation, Issues, and Discussions for sanitized setup questions. | `support@quadproxy.com` for commercial-kit setup and defect reports; never send credentials. |
+
+## What QuadProxy Does Not Provide
+
+- A proxy service, proxy IPs, bandwidth, proxy accounts, or credentials.
+- SOCKS5 or HTTPS proxy setup in the v1.0 workflow; the supported proxy scheme
+  is authenticated HTTP.
+- Per-tab or per-`QWebEngineView` proxy isolation in one running Qt WebEngine
+  process. Use separate processes for separate proxy identities.
+- Reliable proxy rotation after WebEngine starts. Restart the process after a
+  proxy endpoint or credential change.
+- Proof of DNS privacy, access to a particular target site, or immunity from a
+  proxy provider's outage or target-site restrictions.
+
+---
+
 ## Package Contents
 
 - `quadproxy/`: Package with proxy configuration, authentication callbacks, diagnostics, and GUI wizard.
 - `qt_proxy_starter.py`: Standalone starter app entry point.
-- `examples/`: Five runnable integration patterns for PyQt5 and PyQt6.
-- `docs/`: Quickstart, integration guide, troubleshooting guide, and API reference.
+- `examples/`: Eight runnable integration patterns for PyQt5 and PyQt6,
+  including a minimal authenticated HTTP lifecycle and rendered public-IP
+  check.
+- `docs/`: Quickstart, lifecycle, integration, troubleshooting, and API
+  references.
 
 ---
 
 ## Documentation
 
+- `docs/README.md`: Documentation index.
 - `docs/QUICKSTART.md`: Installation and first verification.
+- `docs/QWEBENGINE_PROXY_LIFECYCLE.md`: Startup order, callback, verification,
+  and scope limits.
 - `docs/INTEGRATION_GUIDE.md`: Embedding QuadProxy into existing PyQt applications.
 - `docs/TROUBLESHOOTING.md`: Common failure modes and resolution steps.
 - `docs/API_REFERENCE.md`: Package API reference.
@@ -139,4 +174,4 @@ python -m quadproxy wizard
 
 ## License
 
-MIT License. See `LICENSE.txt`.
+Commercial single-customer starter-kit license. See `LICENSE.txt`.
